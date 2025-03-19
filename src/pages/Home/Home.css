@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Kufam:ital,wght@0,400..900;1,400..900&display=swap');
+
+.home-container{
+    margin: 6pc;
+    margin-top: 4pc;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10pc;
+}
+.home-container h1{
+    font-family: "Kufam", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--verde);
+    font-size: 2.9pc;
+    
+}
+.home-container h2{
+    font-family: "Kufam", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--secondary);
+}
+.home-container img{
+   
+    width: 28pc;
+}
+.home-container button{
+    width: 15pc;
+    height: 3pc;
+    font-size: 1.3pc;
+    background-color: var(--verde);
+    border: none;
+    border-radius: 2pc;
+    font-weight: 400;
+    color: white;
+}
+.esq .dir{
+    display: flex;
+    flex-direction: column;
+}
+#mobile{
+    display: none;
+}
+@media screen and (max-width: 768px) {
+    .home-container{
+        margin: 2pc;
+        margin-top: 4pc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap:0pc
+    }
+}

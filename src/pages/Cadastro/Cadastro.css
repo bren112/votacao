@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Kufam:ital,wght@0,400..900;1,400..900&display=swap');
+
+.caixa{
+    margin: 2pc;
+    margin-top: 4pc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.caixa h1{
+    font-family: "Kufam", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--verde);
+    font-size: 2.5pc;
+}
+.caixa h2{
+    font-family: "Kufam", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--secondary);
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 3pc;
+    align-items: center;
+}
+.form input{
+    width: 20pc;
+}
+.form button{
+    width: 20pc;
+}
