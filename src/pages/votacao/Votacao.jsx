@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaSignOutAlt } from "react-icons/fa";
 import supabase from "../../supabaseclient";
+import Confetti from "react-confetti";
 import "./votacao.css";
+import { useWindowSize } from "react-use"; 
 
 function Votacao() {
+    const { width, height } = useWindowSize(); 
     const [nomeVotante, setNomeVotante] = useState("");
     const [candidatos, setCandidatos] = useState([]);
     const [votanteId, setVotanteId] = useState(null);
     const [candidatoVotado, setCandidatoVotado] = useState(null);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [mensagemVoto, setMensagemVoto] = useState("");
     const [imagemModal, setImagemModal] = useState(null);
     const navigate = useNavigate();
 
@@ -64,96 +69,60 @@ function Votacao() {
             alert("Você já votou! Para votar em outro candidato, primeiro remova seu voto.");
             return;
         }
-    
-        const { error: insertVotanteError } = await supabase
-            .from("votante")
-            .update({ candidato_id: candidatoId }) 
-            .eq("id", votanteId);
-    
-        if (insertVotanteError) {
-            alert("Erro ao registrar seu voto.");
-            return;
-        }
-    
+
         const { data: candidatoData, error: candidatoError } = await supabase
             .from("candidatos")
-            .select("quant_votos")
+            .select("quant_votos, imagem")
             .eq("id", candidatoId)
             .single();
-    
+
         if (candidatoError || !candidatoData) {
             alert("Erro ao buscar os dados do candidato.");
             return;
         }
-    
-        const votosAtuais = candidatoData.quant_votos;
-        const novosVotos = votosAtuais + 1; 
-    
-       
-        const { error: updateCandidatoError } = await supabase
-            .from("candidatos")
-            .update({ quant_votos: novosVotos })
-            .eq("id", candidatoId);
-    
-        if (updateCandidatoError) {
-            alert("Erro ao atualizar os votos do candidato.");
-            return;
-        }
-    
-        alert("Voto registrado com sucesso!");
-        setCandidatoVotado(candidatoId);
-        window.location.href = "/votacao";
 
+        const novosVotos = candidatoData.quant_votos + 1;
+
+        await supabase.from("votante").update({ candidato_id: candidatoId }).eq("id", votanteId);
+        await supabase.from("candidatos").update({ quant_votos: novosVotos }).eq("id", candidatoId);
+
+        setCandidatoVotado(candidatoId);
+        setMensagemVoto("Voto registrado com sucesso!");
+        setImagemModal(candidatoData.imagem);
+        setShowConfetti(true);
+
+        window.location.href = '#scroll'
+        setTimeout(() => {
+            setShowConfetti(false);
+            setImagemModal(null);
+        }, 8000);
     };
-    
-    
+
     const handleDesvotar = async () => {
         if (!candidatoVotado) return;
-    
-      
-        const { data: candidatoData, error: candidatoError } = await supabase
+
+        const { data: candidatoData } = await supabase
             .from("candidatos")
-            .select("quant_votos")
+            .select("quant_votos, imagem")
             .eq("id", candidatoVotado)
             .single();
-    
-        if (candidatoError || !candidatoData) {
+
+        if (!candidatoData) {
             alert("Erro ao buscar o candidato.");
             return;
         }
-    
-        const votosAtuais = candidatoData.quant_votos;
-        const novosVotos = votosAtuais > 0 ? votosAtuais - 1 : 0;
-    
-     
-        const { error: updateVotanteError } = await supabase
-            .from("votante")
-            .update({ candidato_id: null })
-            .eq("id", votanteId);
-    
-        if (updateVotanteError) {
-            alert("Erro ao remover o voto.");
-            return;
-        }
-    
-       
-        const { error: updateCandidatoError } = await supabase
-            .from("candidatos")
-            .update({ quant_votos: novosVotos })
-            .eq("id", candidatoVotado);
-    
-        if (updateCandidatoError) {
-            alert("Erro ao atualizar os votos.");
-            return;
-        }
-    
-        alert("Voto removido com sucesso!");
-        setCandidatoVotado(null);
-        window.location.href = "/votacao";
 
+        const novosVotos = Math.max(0, candidatoData.quant_votos - 1);
+
+        await supabase.from("votante").update({ candidato_id: null }).eq("id", votanteId);
+        await supabase.from("candidatos").update({ quant_votos: novosVotos }).eq("id", candidatoVotado);
+
+        setMensagemVoto("Voto removido com sucesso!");
+        setImagemModal(candidatoData.imagem);
+        setCandidatoVotado(null);
+
+        setTimeout(() => setImagemModal(null), 8000);
     };
-    
-    
 
     const handleLogout = () => {
         localStorage.removeItem("votante_id"); 
@@ -162,32 +131,43 @@ function Votacao() {
 
     return (
         <>
-        <br />
-        <div className="sub-header">
-               <button onClick={handleLogout} className="btn-logout">
-            <FaSignOutAlt className="logout-icon" />
-               Logout
-             </button></div>
+        <div id="scroll"></div>
+            <br />
+            <div className="sub-header">
+                <button onClick={handleLogout} className="btn-logout">
+                    <FaSignOutAlt className="logout-icon" />
+                    Logout
+                </button>
+            </div>
             <div className="caixa">
-     
                 <h1>SEU VOTO AQUI!</h1>
                 {nomeVotante && (
                     <div className="top-bar">
                         <h3><span>{nomeVotante}</span>, você pode votar em 1 candidato!</h3>
-                    
                     </div>
                 )}
             </div>
-<br/>
+            <br />
+
             <div className="candidatos">
+                
+                {imagemModal && (
+                    <div className="modal-voto" onClick={() => setImagemModal(null)}>
+                        <div className="modal-content-voto">
+                            <h2>{mensagemVoto}</h2>
+                            <img src={imagemModal} alt="Candidato votado/desvotado" />
+                        </div>
+                    </div>
+                )}
+
                 {candidatos.map((candidato) => (
                     <div key={candidato.id} className="candidato">
+
                         <p>Votos: {candidato.quant_votos}</p>
                         <img 
                             src={candidato.imagem} 
                             alt={candidato.nome} 
                             width="150" 
-                            onClick={() => setImagemModal(candidato.imagem)}
                             className="clicavel"
                         />
                         <div className="infos">
@@ -208,14 +188,8 @@ function Votacao() {
                     </div>
                 ))}
             </div>
+            {showConfetti && <Confetti width={width} height={height} numberOfPieces={500} />}
 
-            {imagemModal && (
-                <div className="modal" onClick={() => setImagemModal(null)}>
-                    <div className="modal-content">
-                        <img src={imagemModal} alt="Imagem ampliada" />
-                    </div>
-                </div>
-            )}
         </>
     );
 }
