@@ -8,6 +8,7 @@ import Votacao from "./pages/votacao/Votacao";
 import Cadastro from "./pages/Cadastro/Cadastro";
 // import CriarCandidato from "./pages/Candidato/CriarCandidato";
 import CadastrarCandidato from "./pages/Candidato/Recado";
+import Ranking from "./pages/Candidato/Ranking";
 function App() {
   return (
     <BrowserRouter>
@@ -20,7 +21,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/votacao" element={<Votacao />} />
             <Route path="/cadastro" element={<Cadastro />} />           
-            <Route path="/criar" element={<CadastrarCandidato />} />    
+            <Route path="/criar" element={<CadastrarCandidato />} />
+            <Route path="/ranking" element={<Ranking />} />
+                
           </Routes>
         </div>
         <Footer />

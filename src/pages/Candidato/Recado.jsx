@@ -107,6 +107,7 @@ function CadastrarCandidato() {
         <div className="login-container">
           <a href="/login">Voltar</a>
           <br />
+          <br />
           <h2>Login Administrativo</h2>
           <form onSubmit={handleLogin}>
             <input
@@ -129,8 +130,14 @@ function CadastrarCandidato() {
       ) : (
   
         <div className="admin-container">
+          <div className="infos">
           <a href="/login">Voltar</a>
+          <a href="/ranking">Ranking</a>
 
+</div>
+<br/>
+<br/>
+<br/>
           <h2>Área Administrativa - Cadastro de Candidatos</h2>
           <div className="form-container">
             <form onSubmit={handleSubmitCandidato}>
@@ -187,6 +194,7 @@ function CadastrarCandidato() {
           max-width: 400px;
           margin: 50px auto;
           border-radius: 10px;
+     
         }
 
         .infos2{
@@ -198,6 +206,7 @@ function CadastrarCandidato() {
           max-width: 900px;
           margin: 0 auto;
           border-radius: 10px;
+          
         }
 
         h2 {
