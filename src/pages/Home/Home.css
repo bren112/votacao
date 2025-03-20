@@ -48,6 +48,9 @@
     display: none;
 }
 @media screen and (max-width: 768px) {
+    .home-container img {
+        width: 16pc;
+    }
     .home-container{
         margin: 2pc;
         margin-top: 4pc;

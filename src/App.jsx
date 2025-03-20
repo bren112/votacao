@@ -9,6 +9,7 @@ import Cadastro from "./pages/Cadastro/Cadastro";
 // import CriarCandidato from "./pages/Candidato/CriarCandidato";
 import CadastrarCandidato from "./pages/Candidato/Recado";
 import Ranking from "./pages/Candidato/Ranking";
+import AutoDrawingCanvas from "./pages/teste/Desenho";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ function App() {
             <Route path="/cadastro" element={<Cadastro />} />           
             <Route path="/criar" element={<CadastrarCandidato />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/auto" element={<AutoDrawingCanvas />} />
                 
           </Routes>
         </div>

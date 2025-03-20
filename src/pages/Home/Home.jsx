@@ -3,7 +3,7 @@
 // import supabase from '../../supabaseclient';
 import './Home.css';
 import { Link } from 'react-router-dom';
-import ImageHome from './image.png';
+import ImageHome from './image2.jpg';
 
 function Home() {
 
@@ -23,12 +23,17 @@ function Home() {
 
         <div className="dir">
         <img src={ImageHome} alt="" srcset="" />
+        <br/>
         <Link to='/login'>
+        <br/>
+        <br/>
+
             <button  id='desktop'>CLIQUE AQUI</button>
         </Link>
         <br />
         <br />
         <Link to='/login'>
+        
             <button id='mobile'>CLIQUE AQUI</button>
         </Link>
         </div>

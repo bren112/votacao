@@ -5,6 +5,7 @@ import supabase from "../../supabaseclient";
 import Confetti from "react-confetti";
 import "./votacao.css";
 import { useWindowSize } from "react-use"; 
+import Countdown from "react-countdown";
 
 function Votacao() {
     const { width, height } = useWindowSize(); 
@@ -128,9 +129,12 @@ function Votacao() {
         localStorage.removeItem("votante_id"); 
         navigate("/login");
     };
+    const dataAlvo = new Date(new Date().getFullYear(), 9, 1, 0, 0, 0); // Outubro (mês 9)
 
     return (
-        <>
+        <> <br/> <div className="contador">
+        Tempo restante para outubro: <Countdown date={dataAlvo} />
+    </div>
         <div id="scroll"></div>
             <br />
             <div className="sub-header">
@@ -138,6 +142,7 @@ function Votacao() {
                     <FaSignOutAlt className="logout-icon" />
                     Logout
                 </button>
+                
             </div>
             <div className="caixa">
                 <h1>SEU VOTO AQUI!</h1>
